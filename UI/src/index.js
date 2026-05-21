@@ -1,10 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import axios from 'axios';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { attachApiRouteFallback } from './axiosRouteFallback';
 
 import { BrowserRouter } from 'react-router-dom'
+
+attachApiRouteFallback(axios);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
