@@ -5,41 +5,35 @@ const normalizeApiBaseUrl = (rawValue) => {
     return "/api";
   }
 
-  // Guard against accidentally using root or health-check URLs as the API base.
+  // Guard against accidentally using health-check URLs as the API base.
   if (normalized === "/") {
-    return "/api";
+    return "";
   }
 
   normalized = normalized.replace(/\/health$/i, "");
   normalized = normalized.replace(/\/api\/health$/i, "/api");
 
-  // If a full backend origin is provided without /api, add it automatically.
+  if (!normalized || normalized === "/") {
+    return "";
+  }
+
+  // Keep absolute URLs exactly as provided after cleanup.
   if (/^https?:\/\//i.test(normalized)) {
     try {
       const url = new URL(normalized);
       const cleanPath = url.pathname.replace(/\/+$/, "");
 
       if (!cleanPath || cleanPath === "/") {
-        url.pathname = "/api";
+        url.pathname = "";
       } else if (/\/health$/i.test(cleanPath)) {
-        url.pathname = cleanPath.replace(/\/health$/i, "") || "/api";
-      } else if (!/\/api$/i.test(cleanPath)) {
-        url.pathname = `${cleanPath}/api`;
+        url.pathname = cleanPath.replace(/\/health$/i, "");
       } else {
         url.pathname = cleanPath;
       }
 
       return url.toString().replace(/\/+$/, "");
     } catch {
-      if (!/\/api$/i.test(normalized)) {
-        normalized = `${normalized}/api`;
-      }
-    }
-  } else if (!/^\/api(?:\/|$)/i.test(normalized)) {
-    normalized = normalized.replace(/\/+$/, "");
-
-    if (!normalized) {
-      return "/api";
+      return normalized;
     }
   }
 

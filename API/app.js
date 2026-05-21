@@ -46,6 +46,16 @@ const corsOptions = {
   allowedHeaders: corsAllowedHeaders,
   optionsSuccessStatus: 204,
 };
+const mountApiRoutes = (basePath = "") => {
+  app.use(`${basePath}/ai`, aiChatRoute);
+  app.use(`${basePath}/user`, userRouter);
+  app.use(`${basePath}/category`, categoryRouter);
+  app.use(`${basePath}/subcategory`, subcategoryRouter);
+  app.use(`${basePath}/addproducts`, addproductRouter);
+  app.use(`${basePath}/transaction`, transactionRouter);
+  app.post(`${basePath}/payment`, Gateway);
+  app.post(`${basePath}/resetpassword`, ResetPasswordMail);
+};
 
 //to handle cross origin request
 app.use((req, res, next) => {
@@ -87,19 +97,8 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.use("/api/ai", aiChatRoute);
-
-app.use("/api/user",userRouter);
-app.use("/api/category",categoryRouter)
-app.use("/api/subcategory",subcategoryRouter);
-app.use("/api/addproducts",addproductRouter);
-app.use("/api/transaction", transactionRouter);
-
-//method to load Gateway
-app.post("/api/payment",Gateway);
-
-//route for forgetpassword
-app.post("/api/resetpassword",ResetPasswordMail);
+mountApiRoutes("/api");
+mountApiRoutes("");
 
 app.use((error, req, res, next) => {
   console.error(error);
