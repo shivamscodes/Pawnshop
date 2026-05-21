@@ -133,8 +133,12 @@ position:relative;
 }
 
 .dropbtn{
+background:none;
+border:none;
 color:white;
 cursor:pointer;
+font:inherit;
+padding:0;
 }
 
 .dropdown-menu{

@@ -1,7 +1,6 @@
 import "./Logout.css"
 
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 // import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -9,7 +8,7 @@ import { toast } from "react-toastify";
 const Logout = () => {
 
   const navigate = useNavigate();
-  const [showConfirm,setShowConfirm] = useState(true);
+  const showConfirm = true;
 
   const handleYes = () => {
 

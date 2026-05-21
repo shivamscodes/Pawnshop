@@ -55,7 +55,7 @@
 
 
 import './AdminHome.css'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { __userapiurl ,__categoryapiurl, __subcategoryapiurl} from '../../API_URL'
