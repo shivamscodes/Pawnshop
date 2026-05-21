@@ -73,9 +73,35 @@ export const config = {
   smtpUser: process.env.SMTP_USER || "",
   smtpPass: process.env.SMTP_PASS || "",
   mailFrom: process.env.MAIL_FROM || process.env.SMTP_USER || "",
+  allowVercelPreviewOrigins: process.env.ALLOW_VERCEL_PREVIEW_ORIGINS !== "false",
   enableLocalUploads:
     process.env.ENABLE_LOCAL_UPLOADS !== "false" && process.env.VERCEL !== "1",
   uploadRoot: path.resolve(__dirname, "../../UI/public/assets/uploads"),
+};
+
+export const isAllowedOrigin = (origin) => {
+  const normalizedOrigin = normalizeUrl(origin);
+
+  if (!normalizedOrigin) {
+    return true;
+  }
+
+  if (config.allowedOrigins.includes(normalizedOrigin)) {
+    return true;
+  }
+
+  if (/^https?:\/\/localhost(?::\d+)?$/i.test(normalizedOrigin)) {
+    return true;
+  }
+
+  if (
+    config.allowVercelPreviewOrigins &&
+    /^https:\/\/[a-z0-9-]+\.vercel\.app$/i.test(normalizedOrigin)
+  ) {
+    return true;
+  }
+
+  return false;
 };
 
 export const requireConfig = (value, message) => {

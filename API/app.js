@@ -5,7 +5,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors'
 import fileUpload from 'express-fileupload';
 
-import { config } from "./config/env.js";
+import { config, isAllowedOrigin } from "./config/env.js";
 import connectToDatabase from "./models/connection.js";
 
 import userRouter from './routers/user.router.js'
@@ -30,13 +30,14 @@ app.use(
         return;
       }
 
-      if (config.allowedOrigins.includes(origin)) {
+      if (isAllowedOrigin(origin)) {
         callback(null, true);
         return;
       }
 
-      callback(new Error("CORS origin not allowed"));
+      callback(new Error(`CORS origin not allowed: ${origin}`));
     },
+    optionsSuccessStatus: 204,
   })
 );
 
