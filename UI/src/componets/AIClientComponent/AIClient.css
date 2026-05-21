@@ -1,0 +1,58 @@
+/* =========================
+   CHATBOT UI
+=========================*/
+
+.chat-area{
+    height:420px;
+    overflow-y:auto;
+    padding:20px;
+    border:1px solid #ddd;
+    background:#f7f7f7;
+    border-radius:6px;
+    margin-bottom:20px;
+}
+
+/* chat message */
+
+.chat-message{
+    max-width:70%;
+    padding:12px 16px;
+    margin-bottom:15px;
+    border-radius:20px;
+    font-size:14px;
+    line-height:1.5;
+}
+
+/* user */
+
+.chat-message.user{
+    background:#1b434c;
+    color:white;
+    margin-left:auto;
+}
+
+/* AI */
+
+.chat-message.assistant{
+    background:#e4e4e4;
+    color:black;
+    margin-right:auto;
+}
+
+/* input area */
+
+.chat-input-wrapper textarea{
+    resize:none;
+}
+
+/* Dark mode support */
+
+body.dark .chat-area{
+    background:#1e1e1e;
+    border-color:#444;
+}
+
+body.dark .chat-message.assistant{
+    background:#333;
+    color:#ddd;
+}

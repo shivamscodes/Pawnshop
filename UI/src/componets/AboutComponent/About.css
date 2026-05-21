@@ -1,0 +1,93 @@
+/* Fade + Slide Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Delay for stagger effect */
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+.delay-4 { animation-delay: 0.8s; }
+.delay-5 { animation-delay: 1s; }
+
+/* Blocks hover effect */
+.tm-block {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  overflow: hidden;   /* ✅ IMPORTANT */
+  border-radius: 10px; /* optional for clean edges */
+}
+
+.tm-block:hover {
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+/* Image zoom */
+.img-responsive {
+  width: 50%;
+  height: 50%;
+  object-fit: contain;   /* ✅ keeps image inside box */
+  transition: transform 0.4s ease;
+}
+
+.img-responsive:hover {
+  transform: scale(1.05);  /* instead of 1.1 */
+}
+
+/* Glow effect on colored blocks */
+.green-bg:hover {
+  box-shadow: 0 0 20px rgba(0,255,0,0.6);
+}
+
+.red-bg:hover {
+  box-shadow: 0 0 20px rgba(255,0,0,0.6);
+}
+
+.yellow-bg:hover {
+  box-shadow: 0 0 20px rgba(255,215,0,0.6);
+}
+
+
+/* Card Layout */
+.info-card {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+/* Hover Effect */
+.info-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.4);
+}
+
+/* Heading */
+.info-card h5 {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+/* Highlight Card (last one) */
+.highlight-card {
+  background: #007bff;
+  color: white;
+  text-align: center;
+}
+
+.highlight-card:hover {
+  background: #0056b3;
+}

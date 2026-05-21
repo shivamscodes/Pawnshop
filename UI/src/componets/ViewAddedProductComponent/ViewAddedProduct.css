@@ -1,0 +1,39 @@
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.product-table th, 
+.product-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border: 1px solid #ccc; /* vertical + horizontal lines */
+}
+
+.product-table thead {
+  background: #007bff;
+  color: #fff;
+}
+
+.product-table tbody tr:hover {
+  background: #f1f9ff;
+}
+
+.btn-blue-gradient {
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: inline-block;
+  transition: 0.3s;
+}
+
+.btn-blue-gradient:hover {
+  transform: scale(1.05);
+}

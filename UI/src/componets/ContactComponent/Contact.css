@@ -1,0 +1,56 @@
+/* Contact Info Box */
+.contact-info-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  transition: 0.5s;
+}
+
+.contact-info-box:hover {
+  transform: translateY(-5px);
+}
+
+/* Form Box */
+.contact-form-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  height: 80vh;
+}
+
+/* Inputs */
+.form-control {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 8px rgba(0,123,255,0.2);
+}
+
+/* Button */
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  transform: scale(1.05);
+}
+
+/* Map */
+.map-container {
+  margin-top: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+}

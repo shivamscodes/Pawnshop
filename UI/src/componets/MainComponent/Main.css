@@ -1,0 +1,18 @@
+video {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.carousel-container {
+  width: 100%;
+  height: 400px;   /* increase height here */
+}
+
+.carousel-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;   /* fills properly without distortion */
+  border-radius: 15px;
+}

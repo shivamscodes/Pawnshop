@@ -1,0 +1,97 @@
+/* Carousel Image */
+.carousel-container {
+  margin-bottom: 20px;
+}
+
+/* Cards */
+.user-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  height: 100%;
+}
+
+.user-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+
+/* Buttons */
+.btn-blue-gradient {
+  background: linear-gradient(to right, #007bff, #00c6ff);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-right: 10px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-blue-gradient:hover {
+  transform: scale(1.05);
+}
+
+.btn-transparent {
+  background: transparent;
+  border: 2px solid #007bff;
+  color: #007bff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  display: inline-block;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-transparent:hover {
+  background: #007bff;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Fade-in Animation */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.delay-1 { animation-delay: 0.2s; }
+.delay-2 { animation-delay: 0.4s; }
+.delay-3 { animation-delay: 0.6s; }
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Image */
+.img-responsive {
+  width: 100%;
+  border-radius: 10px;
+  height: 100vh;
+}
+
+.video-container {
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+ height: 400px;
+}
+
+.video-responsive {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+  
+}
+
+.video-responsive:hover {
+  transform: scale(1.03);
+}
