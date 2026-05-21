@@ -1,42 +1,53 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
-function Auth(){
+function Auth() {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
+  useEffect(() => {
+    const path = window.location.pathname;
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
-    useEffect(()=>{
+    const adminOnlyPaths = [
+      "/admin",
+      "/manageusers",
+      "/addcategory",
+      "/addsubcategory",
+      "/productreview",
+      "/transaction",
+    ];
 
-        var path = window.location.pathname;
+    const authenticatedUserPaths = [
+      "/changepassword",
+      "/editprofile",
+      "/logout",
+    ];
 
-        if(path==="/admin" || path==="/manageusers" || path==="/changepassword" || path==="/editprofile"|| path==="/addcategory"|| path==="/addsubcategory"|| path==="/viewcategory"  || path==="/forgetpassword" || path==="/resetpassword/:email" )
-            {
-            if(!localStorage.getItem("token") || localStorage.getItem("role")!=="admin"){
-                navigate("/Login");
-            }
-           }
-        else if(path==="/user" || path==="/addproducts" || path==="/charity" || path==="/logout"  )
-            {
-            if(!localStorage.getItem("token") || localStorage.getItem("role")!=="user"){
-                navigate("/login");
-            }
-            
-            else{
-                if( localStorage.getItem("role")==="admin"){
-                  navigate("/admin");
-                } else if( localStorage.getItem("role")==="user"){
-                navigate("/user");
-                }else {
-                navigate(path);
-                }
-        }
-    
-            }
-    },[navigate]);
+    const userOnlyPaths = ["/user", "/addproducts", "/charity"];
 
-    return(
-        <></>
-    )
+    if (adminOnlyPaths.includes(path)) {
+      if (!token || role !== "admin") {
+        navigate("/login");
+      }
+      return;
+    }
+
+    if (userOnlyPaths.includes(path)) {
+      if (!token || role !== "user") {
+        navigate("/login");
+      }
+      return;
+    }
+
+    if (authenticatedUserPaths.includes(path)) {
+      if (!token) {
+        navigate("/login");
+      }
+    }
+  }, [navigate]);
+
+  return <></>;
 }
 
 export default Auth;
