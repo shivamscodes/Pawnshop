@@ -60,6 +60,14 @@ app.use(async (req, res, next) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: true,
+    message: "Pawnshop API is running",
+    health: "/api/health",
+  });
+});
+
 app.get("/api/health", (req, res) => {
   res.status(200).json({ status: true });
 });
