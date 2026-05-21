@@ -20,26 +20,53 @@ import transactionRouter from "./routers/transaction.router.js"
 import Gateway from './controller/payment.controller.js';
 
 const app = express();
+const corsMethods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
+const corsAllowedHeaders = [
+  "Origin",
+  "X-Requested-With",
+  "Content-Type",
+  "Accept",
+  "Authorization",
+];
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || config.allowedOrigins.length === 0) {
+      callback(null, true);
+      return;
+    }
+
+    if (isAllowedOrigin(origin)) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error(`CORS origin not allowed: ${origin}`));
+  },
+  methods: corsMethods,
+  allowedHeaders: corsAllowedHeaders,
+  optionsSuccessStatus: 204,
+};
 
 //to handle cross origin request
-app.use(
-  cors({
-    origin(origin, callback) {
-      if (!origin || config.allowedOrigins.length === 0) {
-        callback(null, true);
-        return;
-      }
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
 
-      if (isAllowedOrigin(origin)) {
-        callback(null, true);
-        return;
-      }
+  if (origin && isAllowedOrigin(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Vary", "Origin");
+    res.header("Access-Control-Allow-Methods", corsMethods.join(","));
+    res.header("Access-Control-Allow-Headers", corsAllowedHeaders.join(","));
+  }
 
-      callback(new Error(`CORS origin not allowed: ${origin}`));
-    },
-    optionsSuccessStatus: 204,
-  })
-);
+  if (req.method === "OPTIONS" && origin && isAllowedOrigin(origin)) {
+    res.sendStatus(204);
+    return;
+  }
+
+  next();
+});
+
+app.use(cors(corsOptions));
 
 
 
@@ -58,18 +85,6 @@ app.use(async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
-
-app.get("/", (req, res) => {
-  res.status(200).json({
-    status: true,
-    message: "Pawnshop API is running",
-    health: "/api/health",
-  });
-});
-
-app.get("/api/health", (req, res) => {
-  res.status(200).json({ status: true });
 });
 
 app.use("/api/ai", aiChatRoute);
