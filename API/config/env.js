@@ -50,6 +50,27 @@ const normalizeUrl = (value, fallback = "") => {
   return resolved.replace(/\/+$/, "");
 };
 
+const resolveMongoDbName = () => {
+  const explicitName = (process.env.MONGODB_DB_NAME || "").trim();
+
+  if (explicitName) {
+    return explicitName;
+  }
+
+  try {
+    const mongoUrl = new URL(process.env.MONGODB_URI || "");
+    const pathname = mongoUrl.pathname.replace(/^\/+/, "").trim();
+
+    if (pathname) {
+      return pathname;
+    }
+  } catch {
+    // Ignore URL parsing issues and fall back to the default database name.
+  }
+
+  return "pawnshop";
+};
+
 const splitOrigins = (value) =>
   value
     .split(",")
@@ -62,6 +83,7 @@ export const config = {
   isVercel: process.env.VERCEL === "1",
   port: Number(process.env.PORT || 3001),
   mongoUri: process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/pawnshop",
+  mongoDbName: resolveMongoDbName(),
   clientUrl: normalizeUrl(process.env.CLIENT_URL, "http://localhost:3000"),
   allowedOrigins: splitOrigins(
     process.env.ALLOWED_ORIGINS || process.env.CLIENT_URL || "http://localhost:3000"

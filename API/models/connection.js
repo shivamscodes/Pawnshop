@@ -18,10 +18,19 @@ const connectToDatabase = async () => {
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(config.mongoUri).then((mongooseInstance) => {
-      console.log("Successfully connected to MongoDB");
-      return mongooseInstance;
-    });
+    cached.promise = mongoose
+      .connect(config.mongoUri, {
+        dbName: config.mongoDbName,
+        serverSelectionTimeoutMS: 10000,
+      })
+      .then((mongooseInstance) => {
+        console.log(`Successfully connected to MongoDB database "${config.mongoDbName}"`);
+        return mongooseInstance;
+      })
+      .catch((error) => {
+        cached.promise = null;
+        throw error;
+      });
   }
 
   cached.conn = await cached.promise;

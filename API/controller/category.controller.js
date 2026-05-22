@@ -48,11 +48,11 @@ export const fetch = async(req,res)=>{
     let condition_obj = req.query;
 
     let categoryList = await categorySchemaModel.find(condition_obj);
-    if(categoryList.length!=0){
-        res.status(200).json({"status":true, "info": categoryList});
-    }else{
-        res.status(404).json({"status":false});
-    }
+    res.status(200).json({
+      status: true,
+      info: categoryList,
+      count: categoryList.length,
+    });
 };
 
 

@@ -29,12 +29,11 @@ export const fetch = async (req,res)=>{
    let condition_obj = req.query;
    
    let transactions = await transactionSchemaModel.find(condition_obj);
-   if(transactions!=0){
-    res.status(200).json({"status" : true , "details" : transactions});
-   }
-   else{
-    res.status(500).json({"status" : false});
-   }
+   res.status(200).json({
+    status : true,
+    details : transactions,
+    count: transactions.length,
+   });
  
    
 };

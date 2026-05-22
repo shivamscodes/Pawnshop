@@ -5,27 +5,47 @@ import { config, requireConfig } from "../config/env.js";
 
 import userSchemaModel from "../models/user.model.js";
 
-export const save =async(req,res)=>{
-   // console.log(req.body);
-   const users = await userSchemaModel.find();
-   let l = users.length;
-   const _id = l==0?1:users[l-1]._id+1;
-// console.log(users);
+const normalizeEmail = (email = "") => email.trim().toLowerCase();
 
-   const userDetails = {...req.body,"_id":_id,"role":"user","status":0,"info":Date()};
-   //  console.log(userDetails);
-    
-    try{
+export const save =async(req,res)=>{
+   try{
+    const lastUser = await userSchemaModel.findOne().sort({ _id: -1 });
+    const nextId = lastUser ? lastUser._id + 1 : 1;
+
+    const userDetails = {
+      ...req.body,
+      email: normalizeEmail(req.body.email),
+      _id: nextId,
+      role: "user",
+      status: 1,
+      __v: 1,
+      info: new Date().toString(),
+    };
+
     await userSchemaModel.create(userDetails);
 
-    
-    Mail(req.body.email).catch((error) => {
+    Mail(userDetails.email).catch((error) => {
       console.error("Verification email error:", error);
     });
-res.status(201).json({"status": true});    
+
+    res.status(201).json({
+      status: true,
+      message: "Registration successful",
+    });
 }
-catch{
-   res.status(500).json({"status": false});
+catch(error){
+   const message =
+     error?.errors?.email?.message ||
+     error?.message ||
+     "Registration failed";
+
+   const statusCode =
+     error?.name === "ValidationError" || error?.code === 11000 ? 400 : 500;
+
+   res.status(statusCode).json({
+    status: false,
+    message,
+   });
 }
 
 
@@ -40,17 +60,24 @@ catch{
 //login
 
 export const login=async(req,res)=>{
+   try {
+      const user = await userSchemaModel.findOne({
+        email: normalizeEmail(req.body.email),
+        password: req.body.password,
+      });
 
-   const userDetails = {...req.body,"status":1};
-   const users = await userSchemaModel.find(userDetails);
-   // console.log(users);
-   
-   
-   if(users.length>0){
+   if(user){
+      if (user.status === 0 && user.__v === 1) {
+        return res.status(403).json({
+          status: false,
+          message: "Your account is inactive. Please contact the admin.",
+        });
+      }
+
       const token  = jwt.sign(
         {
-          email: users[0].email,
-          role: users[0].role,
+          email: user.email,
+          role: user.role,
         },
         requireConfig(
           config.jwtSecret,
@@ -59,10 +86,19 @@ export const login=async(req,res)=>{
         { expiresIn: "7d" }
       );
 
-      res.status(200).json({"status":true ,"token":token, "info": users[0]});
+      res.status(200).json({"status":true ,"token":token, "info": user});
    }else{
-      res.status(404).json({"status": false});
+      res.status(401).json({
+        status: false,
+        message: "Invalid email or password",
+      });
    }
+  } catch (error) {
+    res.status(500).json({
+      status: false,
+      message: error.message || "Login failed",
+    });
+  }
 
 };
 
@@ -97,7 +133,11 @@ export const fetch = async(req,res)=>{
 
       res.status(200).json({"status": true, "info": userList});
    }else{
-      res.status(404).json({"status":false});
+      res.status(404).json({
+        status:false,
+        info: [],
+        message: "No users found",
+      });
    }
 
 };

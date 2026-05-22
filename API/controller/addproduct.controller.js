@@ -67,12 +67,11 @@ if(req.query.catnm && req.query.subcatnm){
 // ✅ If admin → condition_obj stays {} → fetch ALL
 let productlist = await addproductsSchemaModel.find(condition_obj);
 
-if(productlist.length!=0){
-res.status(200).json({"status":true,"info":productlist});
-}
-else{
-res.status(404).json({"status":false});
-}
+res.status(200).json({
+  status: true,
+  info: productlist,
+  count: productlist.length,
+});
 
 }
 

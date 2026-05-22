@@ -43,11 +43,11 @@ export const fetch = async(req,res)=>{
     let condition_obj = req.query;
 
     let subcategorylist =await subcategorySchemaModel.find(condition_obj);
-    if(subcategorylist!=0){
-        res.status(200).json({"status": true , "info": subcategorylist});
-    }else{
-        res.status(500).json({"status": false});
-    }
+    res.status(200).json({
+      status: true,
+      info: subcategorylist,
+      count: subcategorylist.length,
+    });
 };
 
 

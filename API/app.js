@@ -28,14 +28,11 @@ const corsAllowedHeaders = [
   "Accept",
   "Authorization",
 ];
+const shouldAllowOrigin = (origin) =>
+  !origin || config.allowedOrigins.length === 0 || isAllowedOrigin(origin);
 const corsOptions = {
   origin(origin, callback) {
-    if (!origin || config.allowedOrigins.length === 0) {
-      callback(null, true);
-      return;
-    }
-
-    if (isAllowedOrigin(origin)) {
+    if (shouldAllowOrigin(origin)) {
       callback(null, true);
       return;
     }
@@ -61,14 +58,14 @@ const mountApiRoutes = (basePath = "") => {
 app.use((req, res, next) => {
   const origin = req.headers.origin;
 
-  if (origin && isAllowedOrigin(origin)) {
+  if (origin && shouldAllowOrigin(origin)) {
     res.header("Access-Control-Allow-Origin", origin);
     res.header("Vary", "Origin");
     res.header("Access-Control-Allow-Methods", corsMethods.join(","));
     res.header("Access-Control-Allow-Headers", corsAllowedHeaders.join(","));
   }
 
-  if (req.method === "OPTIONS" && origin && isAllowedOrigin(origin)) {
+  if (req.method === "OPTIONS" && origin && shouldAllowOrigin(origin)) {
     res.sendStatus(204);
     return;
   }
